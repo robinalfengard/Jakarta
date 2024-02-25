@@ -1,17 +1,17 @@
 package se.iths.restdemo.dto;
 
-import se.iths.restdemo.entity.Person;
+import se.iths.restdemo.entity.Movie;
 
 public record PersonDto(String name, int age){
 
-    public static PersonDto map(Person person){
-        return new PersonDto(person.getName(),person.getAge());
+    public static PersonDto map(Movie movie){
+        return new PersonDto(movie.getFilmName(), movie.getReleaseYear());
     }
 
-    public static Person map(PersonDto personDto){
-        var person =  new Person();
-        person.setName(personDto.name);
-        person.setAge(personDto.age);
+    public static Movie map(PersonDto personDto){
+        var person =  new Movie();
+        person.setFilmName(personDto.name);
+        person.setReleaseYear(personDto.age);
         return person;
     }
 }
