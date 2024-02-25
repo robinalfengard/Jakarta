@@ -10,18 +10,18 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private UUID uuid;
-    private String filmName;
+    private String movieKode ;
+    private String movieName;
     private String director;
     private String firstRole;
     private int releaseYear;
 
-    public UUID getUuid() {
-        return uuid;
+    public String getMovieKode() {
+        return movieKode;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setMovieKode(String movieKode) {
+        this.movieKode = movieKode;
     }
 
     public String getDirector() {
@@ -48,12 +48,12 @@ public class Movie {
         this.id = id;
     }
 
-    public String getFilmName() {
-        return filmName;
+    public String getMovieName() {
+        return movieName;
     }
 
-    public void setFilmName(String filmName) {
-        this.filmName = filmName;
+    public void setMovieName(String movieName) {
+        this.movieName = movieName;
     }
 
     public int getReleaseYear() {
@@ -66,15 +66,15 @@ public class Movie {
 
 
     @Override
-    public final boolean equals(Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return getId() != null && Objects.equals(getId(), movie.getId());
+        return getReleaseYear() == movie.getReleaseYear() && Objects.equals(getId(), movie.getId()) && Objects.equals(getMovieKode(), movie.getMovieKode()) && Objects.equals(getMovieName(), movie.getMovieName()) && Objects.equals(getDirector(), movie.getDirector()) && Objects.equals(getFirstRole(), movie.getFirstRole());
     }
 
     @Override
-    public final int hashCode() {
-        return getClass().hashCode();
+    public int hashCode() {
+        return Objects.hash(getId(), getMovieKode(), getMovieName(), getDirector(), getFirstRole(), getReleaseYear());
     }
 }
