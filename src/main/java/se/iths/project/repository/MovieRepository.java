@@ -1,25 +1,25 @@
-package se.iths.restdemo.repository;
+package se.iths.project.repository;
 
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
-import se.iths.restdemo.entity.Movie;
+import se.iths.project.entity.Movie;
 
 
 import java.io.Serializable;
 import java.util.List;
 
 @ApplicationScoped
-public class PersonRepository implements Serializable {
+public class MovieRepository implements Serializable {
 
     @PersistenceContext(unitName = "mysql")
     EntityManager entityManager;
 
     public List<Movie> all() {
         return entityManager
-                .createQuery("select p from Movie p", Movie.class)
+                .createQuery("select m from Movie m", Movie.class)
                 .getResultList();
     }
 
