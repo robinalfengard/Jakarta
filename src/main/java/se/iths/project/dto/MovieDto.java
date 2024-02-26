@@ -2,14 +2,14 @@ package se.iths.project.dto;
 
 import se.iths.project.entity.Movie;
 
-public record MovieDto(String movieName, int releaseYear, String director, String firstRole, String movieKode){
+public record MovieDto(String movieName, int releaseYear, String director, String firstRole, String movieCode){
 
     public static MovieDto map(Movie movie){
         return new MovieDto(movie.getMovieName(),
                 movie.getReleaseYear(),
                 movie.getDirector(),
                 movie.getFirstRole(),
-                movie.getMovieKode());
+                movie.getMovieCode());
     }
 
     public static Movie map(MovieDto movieDto){
@@ -18,7 +18,7 @@ public record MovieDto(String movieName, int releaseYear, String director, Strin
         movie.setReleaseYear(movieDto.releaseYear);
         movie.setDirector(movieDto.director);
         movie.setFirstRole(movieDto.firstRole);
-        movie.setMovieKode(movieDto.movieKode);
+        movie.setMovieCode(movieDto.movieCode);
         return movie;
     }
 }

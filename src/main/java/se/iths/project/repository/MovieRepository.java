@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import se.iths.project.dto.MovieDto;
 import se.iths.project.entity.Movie;
 
 
@@ -46,6 +47,15 @@ public class MovieRepository implements Serializable {
         Movie updatedMovie = entityManager.merge(existingMovie);
 
         return updatedMovie;
+    }
+    @Transactional
+    public void updateDB(long id, MovieDto movieDto){
+        Movie movie= entityManager.find(Movie.class,id);
+        movie.setMovieName(movieDto.movieName());
+        movie.setReleaseYear(movieDto.releaseYear());
+        movie.setMovieCode(movieDto.movieCode());
+        movie.setDirector(movieDto.director());
+        movie.setFirstRole(movieDto.firstRole());
     }
 
 }
