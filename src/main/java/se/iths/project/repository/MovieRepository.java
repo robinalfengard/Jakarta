@@ -32,4 +32,20 @@ public class MovieRepository implements Serializable {
     public Movie findById(long id) {
         return entityManager.find(Movie.class, id);
     }
+
+    @Transactional
+    public Movie update(Movie existingMovie) {
+//        if (existingMovie == null || existingMovie.getId() == null){
+//            throw new IllegalArgumentException("Movie cannot be null and must have an id");
+//        }
+        existingMovie = entityManager.find(Movie.class, existingMovie.getId());
+//        if (existingMovie == null) {
+//            throw new IllegalArgumentException("Movie with id " + existingMovie.getId() + " does not exist");
+//        }
+
+        Movie updatedMovie = entityManager.merge(existingMovie);
+
+        return updatedMovie;
+    }
+
 }

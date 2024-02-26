@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.iths.project.dto.MovieDto;
 import se.iths.project.dto.Movies;
+import se.iths.project.entity.Movie;
 import se.iths.project.repository.MovieRepository;
 
 import java.net.URI;
@@ -54,5 +55,21 @@ public class MovieResource {
                //Ask Jakarta application server for hostname and url path
                 URI.create("http://localhost:8080/api/movies/" + m.getId()))
                 .build();
+    }
+
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateMovie(@PathParam("id") Long id, MovieDto movieDto){
+        Movie existingMovie = movieRepository.findById(id);
+        if (existingMovie == null){
+            //Response 404
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        existingMovie = MovieDto.map(movieDto);
+        movieRepository.update(existingMovie);
+        return Response.ok(existingMovie).build();
     }
 }
