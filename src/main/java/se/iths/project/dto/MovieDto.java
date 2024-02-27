@@ -1,12 +1,12 @@
 package se.iths.project.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import se.iths.project.entity.Movie;
-
-
-
+import se.iths.project.validate.ReleaseYear;
 import java.util.UUID;
 
-public record MovieDto(String movieName, int releaseYear, String director, String firstRole, String movieCode, UUID uuid){
+public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
+                       @NotEmpty String director, @NotEmpty String firstRole, @NotEmpty String movieCode, UUID uuid){
 
 
     public static MovieDto map(Movie movie){
