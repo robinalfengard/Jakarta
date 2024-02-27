@@ -3,16 +3,20 @@ package se.iths.project.dto;
 import jakarta.validation.constraints.NotEmpty;
 import se.iths.project.entity.Movie;
 import se.iths.project.validate.ReleaseYear;
+import java.util.UUID;
 
 public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
-                       @NotEmpty String director, @NotEmpty String firstRole, @NotEmpty String movieKode){
+                       @NotEmpty String director, @NotEmpty String firstRole, @NotEmpty String movieCode, UUID uuid){
+
 
     public static MovieDto map(Movie movie){
-        return new MovieDto(movie.getMovieName(),
+        return new MovieDto(
+                movie.getMovieName(),
                 movie.getReleaseYear(),
                 movie.getDirector(),
                 movie.getFirstRole(),
-                movie.getMovieKode());
+                movie.getUuid());
+                movie.getMovieCode());
     }
 
     public static Movie map(MovieDto movieDto){
@@ -21,7 +25,9 @@ public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
         movie.setReleaseYear(movieDto.releaseYear);
         movie.setDirector(movieDto.director);
         movie.setFirstRole(movieDto.firstRole);
-        movie.setMovieKode(movieDto.movieKode);
+        movie.setUuid(movieDto.uuid);
+        movie.setMovieCode(movieDto.movieCode);
         return movie;
     }
+
 }
