@@ -6,6 +6,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import se.iths.project.dto.MovieDto;
 import se.iths.project.dto.Movies;
+import se.iths.project.entity.Movie;
 import se.iths.project.repository.MovieRepository;
 
 import java.net.URI;
@@ -36,9 +37,9 @@ public class MovieResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public MovieDto one(@PathParam("id") long id){
+    public MovieDto one(@PathParam("id") long id) {
         var movie = movieRepository.findById(id);
-        if( movie == null)
+        if (movie == null)
             throw new NotFoundException("Invalid id " + id);
         return MovieDto.map(movie);
     }
@@ -46,13 +47,40 @@ public class MovieResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
-    public Response create(MovieDto movieDto){
+    public Response create(MovieDto movieDto) {
         //Save to database
         var m = movieRepository.add(MovieDto.map(movieDto));
 
-       return Response.created(
-               //Ask Jakarta application server for hostname and url path
-                URI.create("http://localhost:8080/api/movies/" + m.getId()))
+        return Response.created(
+                        //Ask Jakarta application server for hostname and url path
+                        URI.create("http://localhost:8080/api/movies/" + m.getId()))
                 .build();
+    }
+
+    @PUT
+    @Path("/update/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response update(@PathParam("id") long id, MovieDto movieDto) {
+        movieRepository.updateDB(id, movieDto);
+        return Response.
+                created(URI.create("http://localhost:8080/api/movies/test" + id))
+                .build();
+    }
+
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateMovie(@PathParam("id") Long id, MovieDto movieDto) {
+        Movie existingMovie = movieRepository.findById(id);
+        if (existingMovie == null) {
+            //Response 404
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        existingMovie = MovieDto.map(movieDto);
+        movieRepository.update(existingMovie);
+        return Response.ok(existingMovie).build();
     }
 }

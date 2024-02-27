@@ -5,6 +5,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import se.iths.project.dto.MovieDto;
 import se.iths.project.entity.Movie;
 
 
@@ -32,4 +33,29 @@ public class MovieRepository implements Serializable {
     public Movie findById(long id) {
         return entityManager.find(Movie.class, id);
     }
+
+    @Transactional
+    public Movie update(Movie existingMovie) {
+//        if (existingMovie == null || existingMovie.getId() == null){
+//            throw new IllegalArgumentException("Movie cannot be null and must have an id");
+//        }
+        existingMovie = entityManager.find(Movie.class, existingMovie.getId());
+//        if (existingMovie == null) {
+//            throw new IllegalArgumentException("Movie with id " + existingMovie.getId() + " does not exist");
+//        }
+
+        Movie updatedMovie = entityManager.merge(existingMovie);
+
+        return updatedMovie;
+    }
+    @Transactional
+    public void updateDB(long id, MovieDto movieDto){
+        Movie movie= entityManager.find(Movie.class,id);
+        movie.setMovieName(movieDto.movieName());
+        movie.setReleaseYear(movieDto.releaseYear());
+        movie.setMovieCode(movieDto.movieCode());
+        movie.setDirector(movieDto.director());
+        movie.setFirstRole(movieDto.firstRole());
+    }
+
 }
