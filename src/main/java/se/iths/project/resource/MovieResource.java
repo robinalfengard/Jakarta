@@ -1,6 +1,7 @@
 package se.iths.project.resource;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -46,7 +47,7 @@ public class MovieResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
-    public Response create(MovieDto movieDto){
+    public Response create(@Valid MovieDto movieDto){
         //Save to database
         var m = movieRepository.add(MovieDto.map(movieDto));
 

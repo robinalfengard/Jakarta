@@ -20,8 +20,8 @@ import java.lang.annotation.*;
         ElementType.PARAMETER,
         ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-@Repeatable(Year.List.class)
-public @interface Year {
+@Repeatable(ReleaseYear.List.class)
+public @interface ReleaseYear {
     String message() default "Not a valid year";
 
     Class<?>[] groups() default {};
@@ -37,6 +37,6 @@ public @interface Year {
     @Retention(RetentionPolicy.RUNTIME)
     @Documented
     @interface List {
-        Year[] value();
+        ReleaseYear[] value();
     }
 }

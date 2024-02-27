@@ -2,8 +2,10 @@ package se.iths.project.dto;
 
 import jakarta.validation.constraints.NotEmpty;
 import se.iths.project.entity.Movie;
+import se.iths.project.validate.ReleaseYear;
 
-public record MovieDto(@NotEmpty String movieName, int releaseYear, String director, String firstRole, String movieKode){
+public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
+                       @NotEmpty String director, @NotEmpty String firstRole, @NotEmpty String movieKode){
 
     public static MovieDto map(Movie movie){
         return new MovieDto(movie.getMovieName(),
