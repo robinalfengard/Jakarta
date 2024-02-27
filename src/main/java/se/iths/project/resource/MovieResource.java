@@ -61,7 +61,9 @@ public class MovieResource {
     public Response deleteById(@PathParam("uuid") UUID uuid){
         var movie = movieRepository.findById(movieRepository.getIdByUuid(uuid));
         if(movie == null)
-            return Response.noContent().build();
+            Response.status(Response.Status.NOT_FOUND)
+                    .entity("Movie not found")
+                    .build();
         movieRepository.deleteByUuid(movie.getUuid().toString());
         return Response.ok().build();
     }
