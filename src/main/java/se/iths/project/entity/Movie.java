@@ -3,6 +3,7 @@ package se.iths.project.entity;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class Movie {
@@ -14,6 +15,9 @@ public class Movie {
     private String director;
     private String firstRole;
     private int releaseYear;
+    private UUID uuid;
+
+
 
     public String getMovieCode() {
         return movieCode;
@@ -63,6 +67,13 @@ public class Movie {
         this.releaseYear = releaseYear;
     }
 
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = UUID.randomUUID();
+    }
 
     @Override
     public boolean equals(Object o) {

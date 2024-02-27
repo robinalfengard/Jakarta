@@ -1,6 +1,7 @@
 package se.iths.project.resource;
 
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -11,6 +12,7 @@ import se.iths.project.repository.MovieRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Path("movies")
 public class MovieResource {
@@ -47,9 +49,29 @@ public class MovieResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     //@Produces(MediaType.APPLICATION_JSON)
-    public Response create(MovieDto movieDto) {
+    public Response create(@Valid MovieDto movieDto){
+
         //Save to database
         var m = movieRepository.add(MovieDto.map(movieDto));
+
+       return Response.created(
+               //Ask Jakarta application server for hostname and url path
+                URI.create("http://localhost:8080/api/movies/" + m.getId()))
+                .build();
+    }
+
+    @DELETE
+    @Path("{uuid}")
+    public Response deleteById(@PathParam("uuid") UUID uuid){
+        var movie = movieRepository.findById(movieRepository.getIdByUuid(uuid));
+        if(movie == null)
+            Response.status(Response.Status.NOT_FOUND)
+                    .entity("Movie not found")
+                    .build();
+        movieRepository.deleteByUuid(movie.getUuid().toString());
+        return Response.ok().build();
+    }
+
 
         return Response.created(
                         //Ask Jakarta application server for hostname and url path
