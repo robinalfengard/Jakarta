@@ -58,29 +58,15 @@ public class MovieResource {
     }
 
     @PUT
-    @Path("/update/{id}")
+    @Path("{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") long id, MovieDto movieDto) {
+        if (id == 0) throw new IllegalArgumentException("Id cannot be zero");
         movieRepository.updateDB(id, movieDto);
         return Response.
                 created(URI.create("http://localhost:8080/api/movies/test" + id))
                 .build();
     }
 
-    @PUT
-    @Path("{id}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateMovie(@PathParam("id") Long id, MovieDto movieDto) {
-        Movie existingMovie = movieRepository.findById(id);
-        if (existingMovie == null) {
-            //Response 404
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-
-        existingMovie = MovieDto.map(movieDto);
-        movieRepository.update(existingMovie);
-        return Response.ok(existingMovie).build();
-    }
 }
