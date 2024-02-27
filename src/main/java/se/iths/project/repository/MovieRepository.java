@@ -63,12 +63,11 @@ public class MovieRepository implements Serializable {
         if (movieDto == null) throw new IllegalArgumentException("Movie cannot be null");
         Movie movie = entityManager.find(Movie.class, id);
         if (movie == null) throw new IllegalArgumentException("This movie does not exist in the database");
-        Movie movie= entityManager.find(Movie.class,id);
         movie.setMovieName(movieDto.movieName());
         movie.setReleaseYear(movieDto.releaseYear());
         movie.setMovieCode(movieDto.movieCode());
         movie.setDirector(movieDto.director());
         movie.setFirstRole(movieDto.firstRole());
     }
-    }
 }
+

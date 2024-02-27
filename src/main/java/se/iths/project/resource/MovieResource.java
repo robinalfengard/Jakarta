@@ -73,11 +73,6 @@ public class MovieResource {
     }
 
 
-        return Response.created(
-                        //Ask Jakarta application server for hostname and url path
-                        URI.create("http://localhost:8080/api/movies/" + m.getId()))
-                .build();
-    }
 
     @PUT
     @Path("{id}")
