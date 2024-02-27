@@ -2,9 +2,12 @@ package se.iths.project.dto;
 
 import se.iths.project.entity.Movie;
 
+
+
 import java.util.UUID;
 
-public record MovieDto(String movieName, int releaseYear, String director, String firstRole, String movieKode, UUID uuid){
+public record MovieDto(String movieName, int releaseYear, String director, String firstRole, String movieCode, UUID uuid){
+
 
     public static MovieDto map(Movie movie){
         return new MovieDto(
@@ -12,8 +15,8 @@ public record MovieDto(String movieName, int releaseYear, String director, Strin
                 movie.getReleaseYear(),
                 movie.getDirector(),
                 movie.getFirstRole(),
-                movie.getMovieKode(),
                 movie.getUuid());
+                movie.getMovieCode());
     }
 
     public static Movie map(MovieDto movieDto){
@@ -22,8 +25,8 @@ public record MovieDto(String movieName, int releaseYear, String director, Strin
         movie.setReleaseYear(movieDto.releaseYear);
         movie.setDirector(movieDto.director);
         movie.setFirstRole(movieDto.firstRole);
-        movie.setMovieKode(movieDto.movieKode);
         movie.setUuid(movieDto.uuid);
+        movie.setMovieCode(movieDto.movieCode);
         return movie;
     }
 
