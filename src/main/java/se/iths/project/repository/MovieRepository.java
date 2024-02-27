@@ -37,7 +37,7 @@ public class MovieRepository implements Serializable {
         return entityManager.find(Movie.class, id);
     }
 
-    @Transactional
+   
 
     public Long getIdByUuid(UUID uuid){
         String jpql = "SELECT m.id from Movie m where m.uuid = :uuid";
@@ -57,21 +57,12 @@ public class MovieRepository implements Serializable {
         query.executeUpdate();
     }
 
-    public Movie update(Movie existingMovie) {
-//        if (existingMovie == null || existingMovie.getId() == null){
-//            throw new IllegalArgumentException("Movie cannot be null and must have an id");
-//        }
-        existingMovie = entityManager.find(Movie.class, existingMovie.getId());
-//        if (existingMovie == null) {
-//            throw new IllegalArgumentException("Movie with id " + existingMovie.getId() + " does not exist");
-//        }
-
-        Movie updatedMovie = entityManager.merge(existingMovie);
-
-        return updatedMovie;
-    }
+  
     @Transactional
     public void updateDB(long id, MovieDto movieDto){
+        if (movieDto == null) throw new IllegalArgumentException("Movie cannot be null");
+        Movie movie = entityManager.find(Movie.class, id);
+        if (movie == null) throw new IllegalArgumentException("This movie does not exist in the database");
         Movie movie= entityManager.find(Movie.class,id);
         movie.setMovieName(movieDto.movieName());
         movie.setReleaseYear(movieDto.releaseYear());
@@ -79,5 +70,5 @@ public class MovieRepository implements Serializable {
         movie.setDirector(movieDto.director());
         movie.setFirstRole(movieDto.firstRole());
     }
-
+    }
 }
