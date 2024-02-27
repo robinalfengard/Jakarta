@@ -6,7 +6,7 @@ import se.iths.project.validate.ReleaseYear;
 import java.util.UUID;
 
 public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
-                       @NotEmpty String director, @NotEmpty String firstRole, @NotEmpty String movieCode, UUID uuid){
+                       @NotEmpty String director, @NotEmpty String firstRole, UUID uuid){
 
 
     public static MovieDto map(Movie movie){
@@ -15,7 +15,6 @@ public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
                 movie.getReleaseYear(),
                 movie.getDirector(),
                 movie.getFirstRole(),
-                movie.getMovieCode(),
                 movie.getUuid());
 
     }
@@ -27,7 +26,6 @@ public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
         movie.setDirector(movieDto.director);
         movie.setFirstRole(movieDto.firstRole);
         movie.setUuid(movieDto.uuid);
-        movie.setMovieCode(movieDto.movieCode);
         return movie;
     }
 

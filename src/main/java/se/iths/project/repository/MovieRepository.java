@@ -65,7 +65,6 @@ public class MovieRepository implements Serializable {
         if (movie == null) throw new IllegalArgumentException("This movie does not exist in the database");
         movie.setMovieName(movieDto.movieName());
         movie.setReleaseYear(movieDto.releaseYear());
-        movie.setMovieCode(movieDto.movieCode());
         movie.setDirector(movieDto.director());
         movie.setFirstRole(movieDto.firstRole());
     }

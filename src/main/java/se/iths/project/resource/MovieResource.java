@@ -82,7 +82,7 @@ public class MovieResource {
         if (id == 0) throw new IllegalArgumentException("Id cannot be zero");
         movieRepository.updateDB(id, movieDto);
         return Response.
-                created(URI.create("http://localhost:8080/api/movies/test" + id))
+                created(URI.create("http://localhost:8080/api/movies/" + id))
                 .build();
     }
 
