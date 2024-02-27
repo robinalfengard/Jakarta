@@ -10,6 +10,7 @@ import se.iths.project.repository.MovieRepository;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Path("movies")
 public class MovieResource {
@@ -39,7 +40,7 @@ public class MovieResource {
     public MovieDto one(@PathParam("id") long id){
         var movie = movieRepository.findById(id);
         if( movie == null)
-            throw new NotFoundException("Invalid id " + id);
+            throw new NotFoundException("Invalid id" + id);
         return MovieDto.map(movie);
     }
 
@@ -56,12 +57,12 @@ public class MovieResource {
     }
 
     @DELETE
-    @Path("delete/{movieKode}")
-    public Response deleteById(@PathParam("movieKode") String movieKode){
-        var movie = movieRepository.findById(movieRepository.getIdByMovieKode(movieKode));
+    @Path("{uuid}")
+    public Response deleteById(@PathParam("uuid") UUID uuid){
+        var movie = movieRepository.findById(movieRepository.getIdByUuid(uuid));
         if(movie == null)
             return Response.noContent().build();
-        movieRepository.deleteByMovieKode(movie.getMovieKode());
+        movieRepository.deleteByUuid(movie.getUuid().toString());
         return Response.ok().build();
     }
 

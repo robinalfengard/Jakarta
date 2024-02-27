@@ -12,6 +12,7 @@ import se.iths.project.entity.Movie;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 @ApplicationScoped
 public class MovieRepository implements Serializable {
@@ -34,21 +35,23 @@ public class MovieRepository implements Serializable {
     public Movie findById(long id) {
         return entityManager.find(Movie.class, id);
     }
+
     @Transactional
-    public Long getIdByMovieKode(String movieKode){
-        String jpql = "SELECT m.id from Movie m where m.movieKode = :movieKode";
+    public Long getIdByUuid(UUID uuid){
+        String jpql = "SELECT m.id from Movie m where m.uuid = :uuid";
         Query query = entityManager.createQuery(jpql);
+        query.setParameter("uuid", uuid);
         if(query.getResultList().isEmpty())
-            throw new NoResultException("No movie with that title found");
-        query.setParameter("movieKode", movieKode);
+            throw new NoResultException("No movie with that UUID found");
         return (Long) query.getSingleResult();
     }
 
     @Transactional
-    public void deleteByMovieKode(String movieKode){
-        String jpql = "DELETE FROM Movie WHERE movieKode = :movieKode";
+    public void deleteByUuid(String uuidString){
+        UUID uuid = UUID.fromString(uuidString);
+        String jpql = "DELETE FROM Movie WHERE uuid = :uuid";
         Query query = entityManager.createQuery(jpql);
-        query.setParameter("movieKode", movieKode);
+        query.setParameter("uuid", uuid);
         query.executeUpdate();
     }
 }
