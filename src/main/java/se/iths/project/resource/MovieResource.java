@@ -49,10 +49,20 @@ public class MovieResource {
     public Response create(MovieDto movieDto){
         //Save to database
         var m = movieRepository.add(MovieDto.map(movieDto));
-
        return Response.created(
                //Ask Jakarta application server for hostname and url path
                 URI.create("http://localhost:8080/api/movies/" + m.getId()))
                 .build();
     }
+
+    @DELETE
+    @Path("delete/{movieKode}")
+    public Response deleteById(@PathParam("movieKode") String movieKode){
+        var movie = movieRepository.findById(movieRepository.getIdByMovieKode(movieKode));
+        if(movie == null)
+            return Response.noContent().build();
+        movieRepository.deleteByMovieKode(movie.getMovieKode());
+        return Response.ok().build();
+    }
+
 }
