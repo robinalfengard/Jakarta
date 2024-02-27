@@ -15,8 +15,9 @@ public record MovieDto(@NotEmpty String movieName, @ReleaseYear int releaseYear,
                 movie.getReleaseYear(),
                 movie.getDirector(),
                 movie.getFirstRole(),
+                movie.getMovieCode(),
                 movie.getUuid());
-                movie.getMovieCode());
+
     }
 
     public static Movie map(MovieDto movieDto){
