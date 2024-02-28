@@ -79,7 +79,7 @@ public class MovieResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response update(@PathParam("id") long id, MovieDto movieDto) {
-        if (id == 0) throw new IllegalArgumentException("Id cannot be zero");
+        if (id == 0) throw new BadRequestException("Id cannot be zero");
         movieRepository.updateDB(id, movieDto);
         return Response.
                 created(URI.create("http://localhost:8080/api/movies/" + id))

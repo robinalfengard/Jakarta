@@ -1,12 +1,14 @@
 package se.iths.project.repository;
 
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.BadRequestException;
+import jakarta.ws.rs.NotAcceptableException;
+import jakarta.ws.rs.NotFoundException;
 import se.iths.project.dto.MovieDto;
 import se.iths.project.entity.Movie;
 
@@ -34,17 +36,17 @@ public class MovieRepository implements Serializable {
     }
 
     public Movie findById(long id) {
-        return entityManager.find(Movie.class, id);
+        var movie = entityManager.find(Movie.class, id);
+        if (movie == null) throw new NotFoundException("No movie with id " + id);
+        return movie;
     }
-
-   
 
     public Long getIdByUuid(UUID uuid){
         String jpql = "SELECT m.id from Movie m where m.uuid = :uuid";
         Query query = entityManager.createQuery(jpql);
         query.setParameter("uuid", uuid);
         if(query.getResultList().isEmpty())
-            throw new NoResultException("No movie with that UUID found");
+            throw new NotFoundException("No movie with that UUID found");
         return (Long) query.getSingleResult();
     }
 
@@ -57,16 +59,14 @@ public class MovieRepository implements Serializable {
         query.executeUpdate();
     }
 
-  
     @Transactional
     public void updateDB(long id, MovieDto movieDto){
-        if (movieDto == null) throw new IllegalArgumentException("Movie cannot be null");
+        if (movieDto == null) throw new BadRequestException("Movie cannot be null");
         Movie movie = entityManager.find(Movie.class, id);
-        if (movie == null) throw new IllegalArgumentException("This movie does not exist in the database");
+        if (movie == null) throw new NotFoundException("This movie does not exist in the database");
         movie.setMovieName(movieDto.movieName());
         movie.setReleaseYear(movieDto.releaseYear());
         movie.setDirector(movieDto.director());
         movie.setFirstRole(movieDto.firstRole());
     }
 }
-
