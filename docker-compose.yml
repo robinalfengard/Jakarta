@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppassword" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  wildfly:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      DB_CONNECTION_URL: jdbc:mysql://db:3306/test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    depends_on:
+      db:
+        condition: service_healthy
+    #    healthcheck:
+    #      test: ["CMD-SHELL", "curl --fail -I --silent -o /dev/null http://wildfly:8080"]
+    #      interval: 5s
+    #      timeout: 5s
+    #      retries: 20
+    restart: unless-stopped
+volumes:
+  db-data:

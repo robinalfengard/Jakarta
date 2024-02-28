@@ -13,16 +13,4 @@
             <property name="hibernate.highlight_sql" value="true"/>
         </properties>
     </persistence-unit>
-
-    <persistence-unit name="h2">
-        <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
-        <properties>
-            <!-- Automatically export the schema -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
-            <!-- Echo all executed SQL to console -->
-            <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.highlight_sql" value="true"/>
-        </properties>
-    </persistence-unit>
 </persistence>
