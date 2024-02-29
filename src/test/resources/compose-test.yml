@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.3.0
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_ROOT_PASSWORD: password
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost", "-uroot", "-ppassword" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  wildfly:
+    build:
+      context: ../../../.
+      dockerfile: Dockerfile
+    environment:
+      DB_CONNECTION_URL: jdbc:mysql://db:3306/test
+      DB_USERNAME: root
+      DB_PASSWORD: password
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
