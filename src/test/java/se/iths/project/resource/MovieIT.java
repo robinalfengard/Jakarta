@@ -16,6 +16,7 @@ import se.iths.project.entity.Movie;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,6 +30,7 @@ public class MovieIT {
                     .withLocalCompose(true);
 
     static String host;
+    static Movies movies;
     static int port;
 
     @BeforeAll
@@ -66,10 +68,82 @@ public class MovieIT {
     @Test
     @DisplayName("Request for read respons status code 200")
     void requestForReadResponsStatusCode200() {
-        Movies movies = RestAssured.get("/movies").then()
+        movies = RestAssured.get("/movies").then()
                 .statusCode(200)
                 .extract()
                 .as(Movies.class);
+        movies.movieDtos().clear();
         assertEquals(List.of(), movies.movieDtos());
+    }
+    @Test
+    @DisplayName("Request for delete response Status code 200")
+    void requestForDeleteResponseStatusCode200() {
+        String requestBody = "{"
+                + "\"movieName\": \"Oppenheimer\","
+                + "\"releaseYear\": 2023,"
+                + "\"director\": \"Christopher Nolan\","
+                + "\"firstRole\": \"Cillian Murphy\""
+                + "}";
+
+        RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestBody)
+                .when()
+                .post("/movies")
+                .then()
+                .statusCode(201);
+        movies = RestAssured.get("/movies").then()
+                .statusCode(200)
+                .extract()
+                .as(Movies.class);
+        UUID uuid= movies.movieDtos().get(0).uuid();
+
+        RestAssured.given()
+                .when()
+                .delete("/movies/" + uuid)
+                .then()
+                .statusCode(200);
+        movies.movieDtos().clear();
+    }
+    @Test
+    @DisplayName("Update movie with put updates created movie")
+    void updateUpdatesChosenMovie() {
+        movies.movieDtos().clear();
+        String movie = "{"
+                + "\"movieName\": \"Oppenheimer\","
+                + "\"releaseYear\": 2023,"
+                + "\"director\": \"Christopher Nolan\","
+                + "\"firstRole\": \"Cillian Murphy\""
+                + "}";
+        String requestBody = "{"
+                + "\"movieName\": \"Updated Movie\","
+                + "\"releaseYear\": 2024,"
+                + "\"director\": \"New Director\","
+                + "\"firstRole\": \"New Actor\""
+                + "}";
+        RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(movie)
+                .when()
+                .post("/movies")
+                .then()
+                .statusCode(201);
+        movies = RestAssured.get("/movies").then()
+                .statusCode(200)
+                .extract()
+                .as(Movies.class);
+        int id = movies.movieDtos().size();
+        RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(requestBody)
+                .when()
+                .put("/movies/" + id)
+                .then()
+                .statusCode(201);
+        Movie movie1 = RestAssured.get("/movies/" + id).as(Movie.class);
+
+
+        assertEquals("Updated Movie",movie1.getMovieName());
+        movies.movieDtos().clear();
     }
 }
