@@ -31,4 +31,16 @@ class MovieDtoTest {
         assertEquals(1, violations.size());
         assertEquals("Year can not be in the future", violations.iterator().next().getMessage());
     }
+    @Test
+    @DisplayName("Test empty String Should Return Error Message")
+    void testEmptyStringShouldReturnErrorMessage(){
+        MovieDto movie=new MovieDto("",2001,
+                "Christopher Nolan",
+                "Cillian Murphy",
+                UUID.randomUUID());
+        var violations = validator.validate(movie);
+        assertEquals(1, violations.size());
+        assertEquals("must not be empty", violations.iterator().next().getMessage());
+    }
+
 }
