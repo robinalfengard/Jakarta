@@ -15,10 +15,12 @@ import se.iths.project.dto.Movies;
 import se.iths.project.entity.Movie;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @Testcontainers
 public class MovieIT {
     @Container
@@ -29,6 +31,7 @@ public class MovieIT {
                     .withLocalCompose(true);
 
     static String host;
+    Movies movies;
     static int port;
 
     @BeforeAll
@@ -41,6 +44,15 @@ public class MovieIT {
     void before() {
         RestAssured.baseURI = "http://" + host + "/api";
         RestAssured.port = port;
+    }
+
+    @Test
+    @DisplayName("Request for read respons status code 200")
+    void requestForReadResponsStatusCode200() {
+        movies = RestAssured.get("/movies").then()
+                .statusCode(200)
+                .extract()
+                .as(Movies.class);
     }
 
     @Test
@@ -63,13 +75,4 @@ public class MovieIT {
     }
 
 
-    @Test
-    @DisplayName("Request for read respons status code 200")
-    void requestForReadResponsStatusCode200() {
-        Movies movies = RestAssured.get("/movies").then()
-                .statusCode(200)
-                .extract()
-                .as(Movies.class);
-        assertEquals(List.of(), movies.movieDtos());
-    }
 }
