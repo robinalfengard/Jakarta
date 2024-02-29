@@ -174,4 +174,5 @@ public class MovieIT {
                 .statusCode(204);
         movies.movieDtos().clear();
     }
+
 }

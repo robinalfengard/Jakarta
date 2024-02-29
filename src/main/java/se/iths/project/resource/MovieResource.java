@@ -97,5 +97,4 @@ public class MovieResource {
                 created(URI.create("http://localhost:8080/api/movies/" + id))
                 .build();
     }
-
 }
