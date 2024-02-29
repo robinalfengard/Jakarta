@@ -14,7 +14,7 @@ class MovieDtoTest {
             Validation.buildDefaultValidatorFactory().getValidator();
 
     @Test
-    @DisplayName("Test valid movie")
+    @DisplayName("Test valid releaseYear")
     void testValidMovie() {
         MovieDto movie=new MovieDto("Oppenheimer",2023,
                 "Christopher Nolan","Cillian Murphy", UUID.randomUUID());
@@ -23,12 +23,20 @@ class MovieDtoTest {
     }
 
     @Test
-    @DisplayName("Test invalid movie")
+    @DisplayName("Test invalid releaseYear")
     void testInvalidMovie() {
         MovieDto movie=new MovieDto("Oppenheimer",2123,
                 "Christopher Nolan","Cillian Murphy", UUID.randomUUID());
         var violations = validator.validate(movie);
         assertEquals(1, violations.size());
         assertEquals("Year can not be in the future", violations.iterator().next().getMessage());
+    }
+    @Test
+    @DisplayName("Test invalid movieName")
+    void testInvalidMovieName() {
+        MovieDto movie=new MovieDto("",2023,
+                "Christopher Nolan","Cillian Murphy", UUID.randomUUID());
+        var violations = validator.validate(movie);
+        assertEquals(1, violations.size());
     }
 }

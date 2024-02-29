@@ -69,4 +69,11 @@ public class MovieRepository implements Serializable {
         movie.setDirector(movieDto.director());
         movie.setFirstRole(movieDto.firstRole());
     }
+
+    public void deleteById(Long id) {
+        String jpql = "DELETE FROM Movie WHERE id = :id";
+        Query query = entityManager.createQuery(jpql);
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
 }

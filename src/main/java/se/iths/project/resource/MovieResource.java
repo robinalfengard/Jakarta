@@ -62,14 +62,26 @@ public class MovieResource {
 
     @DELETE
     @Path("{uuid}")
-    public Response deleteById(@PathParam("uuid") UUID uuid){
+    public Response deleteByUuid(@PathParam("uuid") UUID uuid){
         var movie = movieRepository.findById(movieRepository.getIdByUuid(uuid));
         if(movie == null)
             Response.status(Response.Status.NOT_FOUND)
                     .entity("Movie not found")
                     .build();
         movieRepository.deleteByUuid(movie.getUuid().toString());
-        return Response.ok().build();
+        return Response.noContent().build();
+    }
+
+    @DELETE
+    @Path("{id}")
+    public Response deleteById(@PathParam("id") Long id){
+        var movie = movieRepository.findById(id);
+        if(movie == null)
+            Response.status(Response.Status.NOT_FOUND)
+                    .entity("Movie not found")
+                    .build();
+        movieRepository.deleteById(id);
+        return Response.noContent().build();
     }
 
 
