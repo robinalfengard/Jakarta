@@ -5,9 +5,7 @@
     <persistence-unit name="mysql">
         <jta-data-source>java:/MySqlDS</jta-data-source>
         <properties>
-            <!-- Automatically export the schema -->
             <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <!-- Echo all executed SQL to console -->
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.highlight_sql" value="true"/>

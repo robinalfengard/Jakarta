@@ -1,5 +1,4 @@
 package se.iths.project.resource;
-
 import io.restassured.RestAssured;
 import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,15 +9,11 @@ import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
 import se.iths.project.dto.Movies;
 import se.iths.project.entity.Movie;
-
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @Testcontainers
 public class MovieIT {
