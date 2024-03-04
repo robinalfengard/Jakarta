@@ -1,5 +1,4 @@
 package se.iths.project.exceptionMapper;
-
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 import jakarta.validation.ConstraintViolation;
@@ -9,9 +8,6 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Provider
@@ -45,10 +41,7 @@ public class ConstraintViolationMapper implements ExceptionMapper<ConstraintViol
             jsonArray.add(jsonError);
 
         }
-
         JsonObject errorJsonEntity = jsonObject.add("errors", jsonArray.build()).build();
-//        logger.error("ERROR: " + errorJsonEntity.getJsonArray("errors"));
         return Response.status(Response.Status.BAD_REQUEST).entity(errorJsonEntity).build();
-
     }
 }

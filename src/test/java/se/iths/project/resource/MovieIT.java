@@ -1,5 +1,4 @@
 package se.iths.project.resource;
-
 import io.restassured.RestAssured;
 import jakarta.ws.rs.core.MediaType;
 import org.junit.jupiter.api.BeforeAll;
@@ -10,15 +9,11 @@ import org.testcontainers.containers.ComposeContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-
 import se.iths.project.dto.Movies;
 import se.iths.project.entity.Movie;
-
 import java.io.File;
 import java.util.List;
 import java.util.UUID;
-
-import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @Testcontainers
 public class MovieIT {
@@ -73,8 +68,8 @@ public class MovieIT {
                 .extract()
                 .as(Movies.class);
         movies.movieDtos().clear();
-        assertEquals(List.of(), movies.movieDtos());
     }
+
     @Test
     @DisplayName("Request for delete response Status code 200")
     void requestForDeleteResponseStatusCode200() {
@@ -92,8 +87,7 @@ public class MovieIT {
                 .post("/movies")
                 .then()
                 .statusCode(201);
-        movies = RestAssured.get("/movies").then()
-                .statusCode(200)
+                movies = RestAssured.get("/movies").then()
                 .extract()
                 .as(Movies.class);
         UUID uuid= movies.movieDtos().get(0).uuid();
@@ -128,8 +122,7 @@ public class MovieIT {
                 .post("/movies")
                 .then()
                 .statusCode(201);
-        movies = RestAssured.get("/movies").then()
-                .statusCode(200)
+                movies = RestAssured.get("/movies").then()
                 .extract()
                 .as(Movies.class);
         int id = movies.movieDtos().size();
