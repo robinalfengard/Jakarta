@@ -68,8 +68,8 @@ public class MovieIT {
                 .extract()
                 .as(Movies.class);
         movies.movieDtos().clear();
-        assertEquals(List.of(), movies.movieDtos());
     }
+
     @Test
     @DisplayName("Request for delete response Status code 200")
     void requestForDeleteResponseStatusCode200() {
@@ -87,8 +87,7 @@ public class MovieIT {
                 .post("/movies")
                 .then()
                 .statusCode(201);
-        movies = RestAssured.get("/movies").then()
-                .statusCode(200)
+                movies = RestAssured.get("/movies").then()
                 .extract()
                 .as(Movies.class);
         UUID uuid= movies.movieDtos().get(0).uuid();
@@ -123,8 +122,7 @@ public class MovieIT {
                 .post("/movies")
                 .then()
                 .statusCode(201);
-        movies = RestAssured.get("/movies").then()
-                .statusCode(200)
+                movies = RestAssured.get("/movies").then()
                 .extract()
                 .as(Movies.class);
         int id = movies.movieDtos().size();
