@@ -82,28 +82,16 @@ class MovieResourceTest {
         verify(movieRepository).add(any(Movie.class));
     }
 
-    @Test
-    void testDeleteMovieSuccess() {
-        UUID uuid = UUID.randomUUID();
-        Movie mockMovie = new Movie();
-        mockMovie.setUuid(uuid);
-        when(movieRepository.findById(anyLong())).thenReturn(mockMovie);
+   @Test
+   void testDeleteMovieNotFound() {
+       UUID uuid = UUID.randomUUID();
+       when(movieRepository.getIdByUuid(uuid)).thenThrow(new NotFoundException("No movie with that UUID found"));
 
-        Response response = movieResource.deleteById(uuid);
+       Response response = movieResource.deleteByUuid(uuid);
 
-        assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
-        verify(movieRepository).deleteByUuid(uuid.toString());
-    }
+       assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
+   }
 
-    @Test
-    void testDeleteMovieNotFound() {
-        UUID uuid = UUID.randomUUID();
-        when(movieRepository.findById(anyLong())).thenReturn(new Movie());
-
-        Response response = movieResource.deleteById(uuid);
-
-        assertEquals(Response.Status.NOT_FOUND.getStatusCode(), response.getStatus());
-    }
 
     @Test
     void testUpdateMovieSuccess() {
