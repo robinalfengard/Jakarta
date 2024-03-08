@@ -51,6 +51,7 @@ public class MovieRepository implements Serializable {
         UUID uuid = UUID.fromString(uuidString);
         String jpqlGet = "SELECT movieName FROM Movie WHERE uuid = :uuid";
         Query getQuery = entityManager.createQuery(jpqlGet);
+        getQuery.setParameter("uuid", uuid);
         var movieTitle = getQuery.getSingleResult();
         if(movieTitle == null)
             throw new NotFoundException("No movie with that UUID  found");
