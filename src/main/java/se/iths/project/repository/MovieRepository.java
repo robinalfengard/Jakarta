@@ -2,17 +2,13 @@ package se.iths.project.repository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
-import jakarta.ws.rs.NotAcceptableException;
 import jakarta.ws.rs.NotFoundException;
 import se.iths.project.dto.MovieDto;
 import se.iths.project.entity.Movie;
-
-
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -53,10 +49,15 @@ public class MovieRepository implements Serializable {
     @Transactional
     public void deleteByUuid(String uuidString){
         UUID uuid = UUID.fromString(uuidString);
-        String jpql = "DELETE FROM Movie WHERE uuid = :uuid";
-        Query query = entityManager.createQuery(jpql);
-        query.setParameter("uuid", uuid);
-        query.executeUpdate();
+        String jpqlGet = "SELECT movieName FROM Movie WHERE uuid = :uuid";
+        Query getQuery = entityManager.createQuery(jpqlGet);
+        var movieTitle = getQuery.getSingleResult();
+        if(movieTitle == null)
+            throw new NotFoundException("No movie with that UUID  found");
+        String jpqlDelete = "DELETE FROM Movie WHERE uuid = :uuid";
+        Query deleteQuery = entityManager.createQuery(jpqlDelete);
+        deleteQuery.setParameter("uuid", uuid);
+        deleteQuery.executeUpdate();
     }
 
     @Transactional

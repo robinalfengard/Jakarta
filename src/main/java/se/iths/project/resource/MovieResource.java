@@ -1,5 +1,4 @@
 package se.iths.project.resource;
-
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -8,7 +7,6 @@ import jakarta.ws.rs.core.Response;
 import se.iths.project.dto.MovieDto;
 import se.iths.project.dto.Movies;
 import se.iths.project.repository.MovieRepository;
-
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,7 +32,7 @@ public class MovieResource {
                 LocalDateTime.now());
     }
 
-    //Don't use primary key as id. Use nanoid or UUID
+
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("{id}")
@@ -47,15 +45,10 @@ public class MovieResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    //@Produces(MediaType.APPLICATION_JSON)
-    public Response create(@Valid MovieDto movieDto) {
-
-        //Save to database
+    public Response create(@Valid MovieDto movieDto){
         var m = movieRepository.add(MovieDto.map(movieDto));
-
-        return Response.created(
-                        //Ask Jakarta application server for hostname and url path
-                        URI.create("http://localhost:8080/api/movies/" + m.getId()))
+       return Response.created(
+                URI.create("http://localhost:8080/api/movies/" + m.getId()))
                 .build();
     }
 
